@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora JS</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div id="container">
+
+        <div id="calculator-modal">
+            <h2>MENU</h2>
+            <button id="close-modal">
+                <img src="icons/cancel.svg" alt="Cancel icon">
+            </button>
+
+            <ul id="menu-options">
+                <li>
+                    <button>Calculadora padrão</button>
+                </li>
+                <li>
+                    <button>Calculadora do Albert</button>
+                </li>
+            </ul>
+
+        </div>
+
+        <div id="left">
+
+            <div id="display-container">
+
+                <div id="menu">
+
+                    <button id="hamburguer-button">
+                        <img src="icons/hamburguer.svg" alt="hamburger" />
+                    </button>
+
+                    <h2>Padrão</h2>
+
+                    <button>
+                        <img src="icons/seta superior.png" alt="" />
+                    </button>
+
+                </div>
+
+                <div id="display">
+                    <p id="equation">2 + 2 =</p>
+                    <p id="equation-result">4</p>
+                </div>
+
+            </div>
+
+            <ul id="keyboard-container">
+                <li>
+                    <button>MC</button>
+                    <button>MR</button>
+                    <button>M+</button>
+                    <button>M-</button>
+                    <button>MS</button>
+                <li>
+                    <button>%</button>
+                </li>
+                <li>
+                    <button>CE</button>
+                </li>
+                <li>
+                    <button>C</button>
+                </li>
+                <li>
+                    <button>
+                        <img src="icons/delete.svg" alt="Delete icon" />
+                    </button>
+                </li>
+                <li>
+                    <button><sup>1</sup>/x</button>
+                </li>
+                <li>
+                    <button>x<sup>2</sup></button>
+                </li>
+                <li>
+                    <button>&#8730;x</button>
+                </li>
+                <li>
+                    <button>&#247;</button>
+                </li>
+                <li>
+                    <button>7</button>
+                </li>
+                <li>
+                    <button>8</button>
+                </li>
+                <li>
+                    <button>9</button>
+                </li>
+                <li>
+                    <button>&#215;</button>
+                </li>
+                <li>
+                    <button>4</button>
+                </li>
+                <li>
+                    <button>5</button>
+                </li>
+                <li>
+                    <button>6</button>
+                </li>
+                <li>
+                    <button>&#8722;</button>
+                </li>
+                <li>
+                    <button>1</button>
+                </li>
+                <li>
+                    <button>2</button>
+                </li>
+                <li>
+                    <button>3</button>
+                </li>
+                <li>
+                    <button>&#43;</button>
+                </li>
+                <li>
+                    <button>+/-</button>
+                </li>
+                <li>
+                    <button>0</button>
+                </li>
+                <li>
+                    <button>,</button>
+                </li>
+                <li>
+                    <button>&#61;</button>
+                </li>
+            </ul>
+
+        </div>
+
+        <div id="right">
+            <div id="top">
+                <button id="history" class="active">Histórico</button>
+                <button id="memory">Memória</button>
+            </div>
+            <div id="middle">
+
+                <!-- <div>
+                    <p>579 &#215; 789 &#61;</p>
+                    <p>456.831</p>
+                </div>
+
+                <div>
+                    <p>579 &#215; 789 &#61;</p>
+                    <p>456.831</p>
+                </div>
+
+                <div>
+                    <p>579 &#215; 789 &#61;</p>
+                    <p>456.831</p>
+                </div>
+
+                <div>
+                    <p>579 &#215; 789 &#61;</p>
+                    <p>456.831</p>
+                </div>
+
+                <div>
+                    <p>579 &#215; 789 &#61;</p>
+                    <p>456.831</p>
+                </div>
+
+                <div>
+                    <p>579 &#215; 789 &#61;</p>
+                    <p>456.831</p>
+                </div>
+
+                <div>
+                    <p>579 &#215; 789 &#61;</p>
+                    <p>456.831</p>
+                </div>
+
+                <div>
+                    <p>579 &#215; 789 &#61;</p>
+                    <p>456.831</p>
+                </div>
+
+                <div>
+                    <p>579 &#215; 789 &#61;</p>
+                    <p>456.831</p>
+                </div>
+
+                <div>
+                    <p>579 &#215; 789 &#61;</p>
+                    <p>456.831</p>
+                </div> -->
+
+            </div>
+            <div id="bottom">
+                <button>
+                    <img src="icons/trash.svg" alt="Trash icon" />
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
