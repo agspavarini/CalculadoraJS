@@ -48,92 +48,94 @@
                 </div>
 
                 <div id="display">
-                    <p id="equation">2 + 2 =</p>
-                    <p id="equation-result">4</p>
+                    <p id="equation"></p>
+                    <p id="equation-result">0</p>
                 </div>
 
             </div>
 
             <ul id="keyboard-container">
+                
                 <li>
-                    <button onclick="teste()">MC</button>
-                    <button>MR</button>
-                    <button>M+</button>
-                    <button>M-</button>
-                    <button>MS</button>
-                <li>
-                    <button>%</button>
+                    <button class="memory-button" data-op="memory-clear">MC</button>
+                    <button class="memory-button" data-op="memory-recall">MR</button>
+                    <button class="memory-button" data-op="memory-add">M+</button>
+                    <button class="memory-button" data-op="memory-sub">M-</button>
+                    <button class="memory-button" data-op="memory-save">MS</button>
                 </li>
                 <li>
-                    <button>CE</button>
+                    <button class="dark-gray-button" data-op="percent">%</button>
                 </li>
                 <li>
-                    <button>C</button>
+                    <button class="dark-gray-button" data-op="clear-entry">CE</button>
                 </li>
                 <li>
-                    <button>
+                    <button class="dark-gray-button" data-op="clear">C</button>
+                </li>
+                <li>
+                    <button class="dark-gray-button" data-op="backspace">
                         <img src="icons/delete.svg" alt="Delete icon" />
                     </button>
                 </li>
                 <li>
-                    <button>1/x</button>
+                    <button class="dark-gray-button" data-op="number-inverter">1/x</button>
                 </li>
                 <li>
-                    <button>x²</button>
+                    <button class="dark-gray-button" data-op="square">x²</button>
                 </li>
                 <li>
-                    <button>&#8730;x</button>
+                    <button class="dark-gray-button" data-op="square-root">&#8730;x</button>
                 </li>
                 <li>
-                    <button>&#247;</button>
+                    <button class="dark-gray-button" data-op="div">&#247;</button>
                 </li>
                 <li>
-                    <button>7</button>
+                    <button class="white-button" data-op="number">7</button>
                 </li>
                 <li>
-                    <button>8</button>
+                    <button class="white-button" data-op="number">8</button>
                 </li>
                 <li>
-                    <button>9</button>
+                    <button class="white-button" data-op="number">9</button>
                 </li>
                 <li>
-                    <button>&#215;</button>
+                    <button class="dark-gray-button" data-op="mul">&#215;</button>
                 </li>
                 <li>
-                    <button>4</button>
+                    <button class="white-button" data-op="number">4</button>
                 </li>
                 <li>
-                    <button>5</button>
+                    <button class="white-button" data-op="number">5</button>
                 </li>
                 <li>
-                    <button>6</button>
+                    <button class="white-button" data-op="number">6</button>
                 </li>
                 <li>
-                    <button>&#8722;</button>
+                    <button class="dark-gray-button" data-op="sub">&#8722;</button>
                 </li>
                 <li>
-                    <button>1</button>
+                    <button class="white-button" data-op="number">1</button>
                 </li>
                 <li>
-                    <button>2</button>
+                    <button class="white-button" data-op="number">2</button>
                 </li>
                 <li>
-                    <button>3</button>
+                    <button class="white-button" data-op="number">3</button>
                 </li>
                 <li>
-                    <button>&#43;</button>
+                    <button class="dark-gray-button" data-op="sum">&#43;</button>
                 </li>
                 <li>
-                    <button>+/-</button>
+                    <button class="white-button" data-op="sign-inverter">+/-</button>
                 </li>
                 <li>
-                    <button>0</button>
+                    <button class="white-button" data-op="number">0</button>
                 </li>
                 <li>
-                    <button>,</button>
+                    <button class="white-button" data-op="comma">,</button>
                 </li>
                 <li>
-                    <button>&#61;</button>
+                    <button id="equal-button" data-op="equals">&#61;</button>
                 </li>
             </ul>
 

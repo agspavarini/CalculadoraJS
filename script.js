@@ -8,7 +8,6 @@ const equationResult = document.getElementById("equation-result")
 const historyTabElement = document.getElementById("history")
 const memoryTabElement = document.getElementById("memory")
 
-
 const tabData = {
     history: [
         {
@@ -103,8 +102,6 @@ memoryTabElement.addEventListener("click", (element) => {
 
 });
 
-function addBehaviour(){}
-
 let input = ['', '', '']
 let aux = 0
 const excludedButtons = ["C","CE","1/x","x²","√x","+/-",","]
@@ -113,30 +110,67 @@ const operators = ['+', '-', 'x', '÷']
 for(let i = 1; i < keyboardContainer.childElementCount; i++){
     let botao = keyboardContainer.children[i].children[0]
 
-    if(!excludedButtons.includes(botao.innerText)){
-        botao.addEventListener("click", () => {
+    let buttonContent = botao.innerText;
+    let op = botao.getAttribute("data-op")
+
+    switch (op) {
+        case "clear-entry":
+            console.log("Limpando a entrada...");
+            break;
+        case "sum":
+        case "sub":
+        case "mul":
+        case "div":
+        case "number-inverter":
+        case "square":
+        case "square-root":
+            botao.addEventListener("click", () => {
+                console.log("O Usuário clicou em uma operação")
+                input[1] = op
+                console.log(input)
+            });
+            break;
+        case "number":
+            botao.addEventListener("click", () => {
             let userInput = botao.innerText
-            
-            if (userInput == "=") {
-                runOperation()
-                // Pegar o resultado e joga na primeira posicao do array
-                // e espera receber outra operação
-                // aqui vai tambem a parte do historico dando push no array 
-            } else {
-                if (operators.includes(userInput)) {
-                    input[1] += userInput
-                    aux = 2
+                if (input[1] != '') {
+                    input[2] += userInput
                 } else {
-                    input[aux] += userInput
+                    input[0] += userInput
                 }
-                displayValue()
-            }
-
-            console.log(input)
-
-
-        })
+                console.log(input)
+            });
+            break;
+        case "percent":
+            break;
+        default:
+            break;
     }
+
+    // if(!excludedButtons.includes(botao.innerText)){
+    //     botao.addEventListener("click", () => {
+    //         let userInput = botao.innerText
+            
+    //         if (userInput == "=") {
+    //             runOperation()
+    //             // Pegar o resultado e joga na primeira posicao do array
+    //             // e espera receber outra operação
+    //             // aqui vai tambem a parte do historico dando push no array 
+    //         } else {
+    //             if (operators.includes(userInput)) {
+    //                 input[1] += userInput
+    //                 aux = 2
+    //             } else {
+    //                 input[aux] += userInput
+    //             }
+    //             displayValue()
+    //         }
+
+    //         console.log(input)
+
+
+    //     })
+    // }
 
 }   
 
@@ -150,25 +184,28 @@ function clearDisplay(){
 }
 
 
-function runOperation() {
-    let operando1 = Number(input[0])
-
-    let operador = input[1]
-
-    let operando2 = Number(input[2])
+function runOperation(operando1, operador, operando2) {
+    let result = 0
+    //     case "percent":
+    //     case "number-inverter":
+    //     case "square":
+    //     case "square-root":
 
     switch (operador) {
-        case "+":
-            equationResult.innerText = operando1 + operando2
+        case "sum":
+            result = operando1 + operando2
             break
-        case "-":
-            equationResult.innerText = operando1 - operando2
+        case "sub":
+            result = operando1 - operando2
             break
-        case "x":
-            equationResult.innerText = operando1 * operando2
+        case "mul":
+            result = operando1 * operando2
             break
-        case "÷":
-            equationResult.innerText = operando1 / operando2
+        case "div":
+            result = operando1 / operando2
             break
+        case "percent":
+            result = op
     }
+    return result
 } 
