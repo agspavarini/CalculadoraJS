@@ -107,6 +107,13 @@ let aux = 0
 const excludedButtons = ["C","CE","1/x","x²","√x","+/-",","]
 const operators = ['+', '-', 'x', '÷']
 
+const operations = {
+    sum: "+",
+    sub: "-",
+    mul: "x",
+    div: "÷"
+}
+
 for(let i = 1; i < keyboardContainer.childElementCount; i++){
     let botao = keyboardContainer.children[i].children[0]
 
@@ -125,9 +132,12 @@ for(let i = 1; i < keyboardContainer.childElementCount; i++){
         case "square":
         case "square-root":
             botao.addEventListener("click", () => {
-                console.log("O Usuário clicou em uma operação")
+                console.log("DENTRO DAS OPERAÇÕES BÁSICAS")
                 input[1] = op
-                console.log(input)
+
+                const operatorSimbol = operations[op]
+                equation.innerText += operatorSimbol
+
             });
             break;
         case "number":
@@ -135,13 +145,26 @@ for(let i = 1; i < keyboardContainer.childElementCount; i++){
             let userInput = botao.innerText
                 if (input[1] != '') {
                     input[2] += userInput
+                    const operatorSimbol = operations[op]
+                    equation.innerText = `${input[0]} ${operatorSimbol} ${input[2]}`
                 } else {
                     input[0] += userInput
+                    console.log(input);
+                    // const operatorSimbol = operations[op]
+                    // equation.innerText = `${input[0]} ${operatorSimbol} ${input[2]}`
                 }
-                console.log(input)
             });
             break;
         case "percent":
+            break;
+        case "equals":
+            botao.addEventListener("click", () => {
+                if (!(input.some((item) => item == ''))) {
+                    const result = runOperation(Number(input[0]), input[1], Number(input[2]))
+                    equation.innerText = ''
+                    equationResult.innerText = result
+                } 
+            })
             break;
         default:
             break;
