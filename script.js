@@ -191,11 +191,11 @@ function onBasicArithmeticOperation(element) {
   console.log(equationItems);
 
   if (equationItems.operand2 !== "") {
-    console.log("O OPERANDO 2 NÃO É VAZIO");
+
     const equationResult = solveEquation();
     resetEquationItems();
 
-    equationItems.operand1 = String(equationResult);
+    equationItems.operand1 = String(equationResult).replace('.', ',');
     equationItems.operationName = arithmeticOperationName;
     equationItems.operationSymbol = arithmeticOperationSymbol;
 
@@ -203,7 +203,6 @@ function onBasicArithmeticOperation(element) {
     updateDisplayContent(partialEquationString, equationItems.operand1);
 
   } else {
-    console.log("O OPERANDO 2 É VAZIO");
 
     if (equationItems.result !== "") {
       equationItems.operand1 = equationItems.result;
@@ -216,6 +215,7 @@ function onBasicArithmeticOperation(element) {
     console.log(equationItems);
     updateDisplayContent(partialEquation);
   }
+
 }
 
 function onEqualsOperation(element) {
@@ -232,18 +232,24 @@ function onEqualsOperation(element) {
 
   if (isEquationComplete()) {
 
+    console.log("EQUATION IS COMPLETED! SOLVING THE EQUATION....");
+
     if (equationItems.result !== "") {
       equationItems.operand1 = equationItems.result;
     }
     console.log(equationItems);
 
     const equationResult = solveEquation();
+    
+    console.log(`equationResult: ${equationResult}`);
 
-    const equationResultString = String(equationResult);
+    const equationResultString = String(equationResult).replace('.', ',');;
     const fullEquationString = `${equationItems.operand1} ${equationItems.operationSymbol} ${equationItems.operand2} =`;
 
     updateDisplayContent(fullEquationString, equationResultString);
+
   }
+
 }
 
 function onClearOperation() {
@@ -348,13 +354,45 @@ function onCommaOperation() {
   console.clear();
   console.log("O USUÁRIO CLICOU NA VÍRGULA");
 
+  console.log(equationItems);
+
+  if (isEquationSolved()) {
+
+    resetEquationItems();
+    
+    equationItems.operand1 = "0,";
+    updateDisplayContent("", equationItems.operand1);
+
+    return;
+
+  }
+
   if (hasOperator()) {
     // ADD COMMA AT THE END OF SECOND OPERAND
 
+    if (equationItems.operand2 === "") {
+      equationItems.operand2 = "0";
+    }
+
+    const operandAlreadyHasComma = equationItems.operand2.includes(",");
+    console.log(`OPERAND 2 ALREADY HAS A COMMA? ${operandAlreadyHasComma}`);
     
+    if (!operandAlreadyHasComma) {
+      equationItems.operand2 = equationItems.operand2.concat(",");
+    }
+
+    updateDisplayContent(null, equationItems.operand2);
 
   } else {
     // ADD COMMA AT THE END OF FIRST OPERAND
+    const operandAlreadyHasComma = equationItems.operand1.includes(",");
+    console.log(`OPERAND 2 ALREADY HAS A COMMA? ${operandAlreadyHasComma}`);
+
+    if (!operandAlreadyHasComma) {
+      equationItems.operand1 = equationItems.operand1.concat(",");
+    }
+
+    updateDisplayContent(null, equationItems.operand1);
   }
 
 }
@@ -380,20 +418,22 @@ function removeLastDigitFromString(string) {
 function solveEquation() {
   let result = 0;
 
+  const operand1Parsed = Number(equationItems.operand1.replace(',', '.'))
+  const operand2Parsed = Number(equationItems.operand2.replace(',', '.'))
+
   switch (equationItems.operationName) {
     case "sum":
-      result = Number(equationItems.operand1) + Number(equationItems.operand2);
+      result = operand1Parsed + operand2Parsed;
       break;
     case "sub":
-      result = Number(equationItems.operand1) - Number(equationItems.operand2);
+      result = operand1Parsed - operand2Parsed;
       break;
     case "mul":
-      result = Number(equationItems.operand1) * Number(equationItems.operand2);
+      result = operand1Parsed * operand2Parsed;
       break;
     case "div":
-      if (Number(equationItems.operand2) !== 0) {
-        result = result =
-          Number(equationItems.operand1) / Number(equationItems.operand2);
+      if (operand2Parsed !== 0) {
+        result = operand1Parsed / operand2Parsed;
       } else {
         result = 0;
       }
@@ -402,7 +442,7 @@ function solveEquation() {
       break;
   }
 
-  equationItems.result = String(result);
+  equationItems.result = String(result).replace('.', ',');
 
   return result;
 }

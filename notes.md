@@ -18,7 +18,7 @@ Cada botão possui um atributo ```data-op```, que pode ser um dos seguintes valo
 * ~~sub~~
 * ~~sum~~
 * sign-inverter
-* comma (,)
+* ~~comma (,)~~
 * ~~equals (=)~~
 * ~~number~~
 
