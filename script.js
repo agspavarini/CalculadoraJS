@@ -98,6 +98,9 @@ function addKeyboardButtonsEvent() {
       case "square":
         buttonElement.addEventListener("click", onSquareOperation);
         break;
+      case "square-root":
+        buttonElement.addEventListener("click", onSquareRootOperation);
+        break;
       default:
         break;
     }
@@ -394,7 +397,7 @@ function onNumberInverterOperation() {
   ).replace(".", ",");
   const invertedNumberNotation = `1/(${equationItems.operand1})`;
   equationItems.operand1 = invertedNumberNotation;
-  
+
   console.log(equationItems);
   updateDisplayContent(invertedNumberNotation, invertedNumberResultString);
 }
@@ -405,14 +408,23 @@ function onSquareOperation() {
 
   const squareNotation = `sqr(${equationItems.operand1})`;
   const squareResultString = String(squareOperand(squareNotation));
-  
+
   equationItems.operand1 = squareNotation;
   console.log(equationItems);
 
   updateDisplayContent(squareNotation, squareResultString);
-  squareOperand(equationItems.operand1)
+}
 
+function onSquareRootOperation() {
+  console.clear();
+  console.log("DENTRO DA OPERAÇÃO DE RAIZ QUADRADA");
 
+  const squareRootNotation = `&#8730;(${equationItems.operand1})`;
+  const squareRootResultString = String(squareRootOperand(squareRootNotation)).replace('.', ',');
+
+  equationItems.operand1 = squareRootNotation;
+
+  updateDisplayContent(equationItems.operand1, squareRootResultString);
 }
 
 // ############################# KEYBOARD EVENTS #############################
@@ -420,16 +432,14 @@ function onSquareOperation() {
 // ############################# UTILITARY FUNCTIONS #############################
 
 function squareOperand(operand) {
-  
   const NUMBER_TO_SQUARE_PATTERN = /\d+/g;
   const numberToSquare = operand.match(NUMBER_TO_SQUARE_PATTERN);
 
   console.log(`numberToSquare: ${numberToSquare}`);
 
   if (numberToSquare !== null) {
-    
     const numberToSquareParsed = Number(numberToSquare.join("."));
-    
+
     if (numberToSquareParsed === 0) {
       return 0;
     }
@@ -441,16 +451,59 @@ function squareOperand(operand) {
     let result = numberToSquareParsed;
 
     const SQR_OCCURRENCIES_PATTERN = /sqr/g;
-    const amountOfSquareOperations = operand.match(SQR_OCCURRENCIES_PATTERN).length;
+    const amountOfSquareOperations = operand.match(
+      SQR_OCCURRENCIES_PATTERN
+    ).length;
 
     console.log(`amountOfSquareOperations: ${amountOfSquareOperations}`);
 
-    for(let i = 0; i < amountOfSquareOperations; i++) {
+    for (let i = 0; i < amountOfSquareOperations; i++) {
       result *= result;
     }
 
     return result;
-    
+  }
+}
+
+function squareRootOperand(operand) {
+  console.log("DENTRO DA FUNÇÃO squareRootOperand");
+
+  const NUMBER_TO_SQRT_PATTERN = /\((\d)*\,?(\d)*\)/g;
+  const numberToSqrtWithParenthesis = operand.match(NUMBER_TO_SQRT_PATTERN);
+
+  console.log(numberToSqrtWithParenthesis);
+
+  if (numberToSqrtWithParenthesis !== null) {
+
+    const numberWithoutParenthesis = numberToSqrtWithParenthesis[0].substring(
+      1,
+      numberToSqrtWithParenthesis[0].length - 1
+    );
+
+    const numberParsed = Number(numberWithoutParenthesis.replace(",", "."));
+
+    let squareRootResult = 0;
+
+    if (numberParsed === 0) {
+      squareRootResult = 0;
+    } else if (numberParsed === 1) {
+      squareRootResult = 1;
+    } else {
+      squareRootResult = numberParsed;
+      console.log(`[BEFORE] squareRootResult: ${squareRootResult}`);
+      const SQRT_OCCURRENCIES_PATTERN = /\&\#8730\;/g;
+      const amountOfSqrtOperations = operand.match(
+        SQRT_OCCURRENCIES_PATTERN
+      ).length;
+
+      for (let i = 0; i < amountOfSqrtOperations; i++) {
+        squareRootResult = Math.sqrt(squareRootResult);
+      }
+
+      return squareRootResult;
+    }
+  } else {
+    return -1;
   }
 
 }
@@ -507,17 +560,22 @@ function parseOperand(operand) {
   const INVERTED_NUMBER_PATTERN = /1\/\((\d\)*)/i;
   const COMMA_NUMBER_PATTERN = /(\d)*\,(\d)*/i;
   const SQR_PATTERN = /sqr/g;
+  const SQRT_PATTERN = /\&\#8730\;/g;
 
   const isInvertedNumber = INVERTED_NUMBER_PATTERN.test(operand);
   const haveCommaInNumber = COMMA_NUMBER_PATTERN.test(operand);
   const isQuareOperation = SQR_PATTERN.test(operand);
+  const isSqrtOperation = SQRT_PATTERN.test(operand);
 
-  if (isQuareOperation) {
+  if (isSqrtOperation) {
+
+    return squareRootOperand(operand);
+
+  } else if (isQuareOperation) {
 
     return squareOperand(operand);
 
   } else if (isInvertedNumber) {
-
     const [, denominator] = operand.split("/");
     const denominatorWithoutParenthesis = denominator.substring(
       1,
@@ -536,7 +594,6 @@ function parseOperand(operand) {
     }
     console.log(invertedNumberResult);
     return invertedNumberResult;
-    
   } else if (haveCommaInNumber) {
     return Number(operand.replace(",", "."));
   } else {

@@ -12,7 +12,7 @@ Cada botão possui um atributo ```data-op```, que pode ser um dos seguintes valo
 * ~~backspace~~
 * ~~number-inverter (1/x)~~
 * ~~square~~
-* square-root
+* ~~square-root~~
 * ~~div~~
 * ~~mul~~
 * ~~sub~~
