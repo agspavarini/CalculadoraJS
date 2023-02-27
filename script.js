@@ -234,9 +234,10 @@ function onEqualsOperation() {
   ) {
     equationItems.operand2 = equationItems.operand1;
   }
-
+  
   if (isEquationComplete()) {
     console.log("EQUATION IS COMPLETED! SOLVING THE EQUATION....");
+    console.log(equationItems);
 
     if (equationItems.result !== "") {
       equationItems.operand1 = equationItems.result;
@@ -257,9 +258,12 @@ function onEqualsOperation() {
     }
 
     updateDisplayContent(fullEquationString, equationResultString);
-    resetEquationItems();
+    // resetEquationItems();
     equationItems.result = String(equationResult);
   }
+
+  console.log(equationItems);
+
 }
 
 function onClearOperation() {
@@ -403,41 +407,82 @@ function onNumberInverterOperation() {
     return;
   }
 
-  const numberInvertedNotation = `1/(${equationItems.operand1})`;
-  invertNumberOperand(numberInvertedNotation);
-  const numberInvertedResult = String(
-    invertNumberOperand(numberInvertedNotation)
-  ).replace(".", ",");
+  if (hasOperator()) {
 
-  equationItems.operand1 = numberInvertedNotation;
-  updateDisplayContent(numberInvertedNotation, numberInvertedResult);
+    const numberInvertedNotation = `1/(${equationItems.operand2})`;
+    invertNumberOperand(numberInvertedNotation);
+    const numberInvertedResult = String(
+      invertNumberOperand(numberInvertedNotation)
+    ).replace(".", ",");
+  
+    equationItems.operand2 = numberInvertedNotation;
+    
+    const numberInvertedNotationString = `${equationItems.operand1} ${ equationItems.operationSymbol} ${ equationItems.operand2}`;
+
+    updateDisplayContent(numberInvertedNotationString, numberInvertedResult);
+
+  } else {
+    const numberInvertedNotation = `1/(${equationItems.operand1})`;
+    invertNumberOperand(numberInvertedNotation);
+    const numberInvertedResult = String(
+      invertNumberOperand(numberInvertedNotation)
+    ).replace(".", ",");
+  
+    equationItems.operand1 = numberInvertedNotation;
+    updateDisplayContent(numberInvertedNotation, numberInvertedResult);
+  }
+
 }
 
 function onSquareOperation() {
   console.clear();
   console.log("DENTRO DA OPERAÇÃO x²");
 
-  const squareNotation = `sqr(${equationItems.operand1})`;
-  const squareResultString = String(squareOperand(squareNotation));
+  if (hasOperator()) {
+    console.log(equationItems);
+    const squareNotation = `sqr(${equationItems.operand2})`;
+    const squareResultString = String(squareOperand(squareNotation));
+  
+    equationItems.operand2 = squareNotation;
+    const squareNotationEquationString = `${equationItems.operand1} ${equationItems.operationSymbol} ${equationItems.operand2}`
+  
+    updateDisplayContent(squareNotationEquationString, squareResultString);
+  } else {
+    const squareNotation = `sqr(${equationItems.operand1})`;
+    const squareResultString = String(squareOperand(squareNotation));
+  
+    equationItems.operand1 = squareNotation;
+    updateDisplayContent(squareNotation, squareResultString);
+  }
 
-  equationItems.operand1 = squareNotation;
-  console.log(equationItems);
-
-  updateDisplayContent(squareNotation, squareResultString);
 }
 
 function onSquareRootOperation() {
   console.clear();
   console.log("DENTRO DA OPERAÇÃO DE RAIZ QUADRADA");
 
-  const squareRootNotation = `&#8730;(${equationItems.operand1})`;
-  const squareRootResultString = String(
-    squareRootOperand(squareRootNotation)
-  ).replace(".", ",");
+  if (hasOperator()) {
 
-  equationItems.operand1 = squareRootNotation;
+    const squareRootNotation = `&#8730;(${equationItems.operand2})`;
+    const squareRootResultString = String(
+      squareRootOperand(squareRootNotation)
+    ).replace(".", ",");
+  
+    equationItems.operand2 = squareRootNotation;
+    const squareRootNotationEquationString = `${equationItems.operand1} ${equationItems.operationSymbol} ${equationItems.operand2}`
 
-  updateDisplayContent(equationItems.operand1, squareRootResultString);
+    updateDisplayContent(squareRootNotationEquationString, squareRootResultString);
+
+  } else {
+    const squareRootNotation = `&#8730;(${equationItems.operand1})`;
+    const squareRootResultString = String(
+      squareRootOperand(squareRootNotation)
+    ).replace(".", ",");
+  
+    equationItems.operand1 = squareRootNotation;
+  
+    updateDisplayContent(equationItems.operand1, squareRootResultString);  
+  }
 }
 
 function onSignInverterOperation() {
@@ -445,19 +490,6 @@ function onSignInverterOperation() {
   console.log("DENTRO DA OPERAÇÃO DE INVERSÃO DE SINAL");
 
   if (hasOperator()) {
-    // NEGATE SECOND OPERAND
-    // if (equationItems.operand2 === "") {
-    //   equationItems.operand2 = equationItems.operand1;
-    // }
-
-    // const negateOperandNotation = `negate(${equationItems.operand2})`;
-    // const negateOperandResult = String(negateOperand(negateOperandNotation)).replace('.',',');
-    // equationItems.operand2 = negateOperandNotation;
-
-    // const equationString = `${equationItems.operand1} ${equationItems.operationSymbol} ${equationItems.operand2}`;
-
-    // updateDisplayContent(equationString, negateOperandResult);
-
     if (equationItems.operand2 === "") {
       equationItems.operand2 = equationItems.operand1;
     }
