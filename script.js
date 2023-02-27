@@ -92,6 +92,9 @@ function addKeyboardButtonsEvent() {
       case "comma":
         buttonElement.addEventListener("click", onCommaOperation);
         break;
+      case "number-inverter":
+        buttonElement.addEventListener("click", onNumberInverterOperation);
+        break;
       default:
         break;
     }
@@ -359,7 +362,7 @@ function onCommaOperation() {
   if (isEquationSolved()) {
 
     resetEquationItems();
-    
+
     equationItems.operand1 = "0,";
     updateDisplayContent("", equationItems.operand1);
 
@@ -397,6 +400,26 @@ function onCommaOperation() {
 
 }
 
+function onNumberInverterOperation() {
+  // console.clear()
+  console.log("O USUÁRIO CLICOU EM INVERTER NÚMERO");
+
+  if (equationItems.operand1 === "0") {
+
+    resetEquationItems();
+    updateDisplayContent("1/(0)", "Não é possível dividir por zero");
+    return;
+
+  }
+
+  const invertedNumberResultString = String(parseOperand(equationItems.operand1)).replace('.', ',');
+  const invertedNumberNotation = `1/(${equationItems.operand1})`;
+  equationItems.operand1 = invertedNumberNotation;
+
+  updateDisplayContent(invertedNumberNotation, invertedNumberResultString);
+
+}
+
 // ############################# KEYBOARD EVENTS #############################
 
 // ############################# UTILITARY FUNCTIONS #############################
@@ -418,8 +441,8 @@ function removeLastDigitFromString(string) {
 function solveEquation() {
   let result = 0;
 
-  const operand1Parsed = Number(equationItems.operand1.replace(',', '.'))
-  const operand2Parsed = Number(equationItems.operand2.replace(',', '.'))
+  const operand1Parsed = parseOperand(equationItems.operand1);
+  const operand2Parsed = parseOperand(equationItems.operand2);
 
   switch (equationItems.operationName) {
     case "sum":
@@ -445,6 +468,42 @@ function solveEquation() {
   equationItems.result = String(result).replace('.', ',');
 
   return result;
+}
+
+function parseOperand(operand) {
+  console.clear()
+  console.log("DENTRO DA FUNÇÃO parseOperand");
+
+  // exemple: 1/(5)
+  const INVERTED_NUMBER_PATTERN = /1\/\((\d\)*)/i;
+  const COMMA_NUMBER_PATTERN = /(\d)*\,(\d)*/i;
+  
+  const isInvertedNumber = INVERTED_NUMBER_PATTERN.test(operand);
+  const haveCommaInNumber = COMMA_NUMBER_PATTERN.test(operand);
+  
+  if (isInvertedNumber) {
+
+    const [, denominator] = operand.split("/");
+    const denominatorWithoutParenthesis = denominator.substring(1, denominator.length - 1)
+    const denominatorHaveComma = COMMA_NUMBER_PATTERN.test(denominatorWithoutParenthesis);
+    let invertedNumberResult = 0;
+
+    if (denominatorHaveComma) {
+      invertedNumberResult = 1 / Number(denominatorWithoutParenthesis.replace(',', '.'));
+    } else {
+      invertedNumberResult = 1 / Number(denominatorWithoutParenthesis);
+    }
+    console.log(invertedNumberResult);
+    return invertedNumberResult;
+
+  } else if (haveCommaInNumber) {
+
+    return Number(operand.replace(',', '.'));
+
+  } else {
+    return Number(operand);
+  }
+
 }
 
 function setOperator(operator, symbol) {
