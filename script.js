@@ -672,7 +672,7 @@ function solveEquation() {
       if (operand2Parsed !== 0) {
         result = operand1Parsed / operand2Parsed;
       } else {
-        result = 0;
+        result = "Cannot divide by zero"; 
       }
       break;
     default:
