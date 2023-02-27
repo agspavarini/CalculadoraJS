@@ -101,6 +101,9 @@ function addKeyboardButtonsEvent() {
       case "square-root":
         buttonElement.addEventListener("click", onSquareRootOperation);
         break;
+      case "sign-inverter":
+        buttonElement.addEventListener("click", onSignInverterOperation);
+        break;
       default:
         break;
     }
@@ -220,7 +223,7 @@ function onBasicArithmeticOperation(element) {
   }
 }
 
-function onEqualsOperation(element) {
+function onEqualsOperation() {
   console.clear();
   console.log("O USUÁRIO CLICOU NO BOTÃO DE IGUAL");
 
@@ -245,9 +248,17 @@ function onEqualsOperation(element) {
     console.log(`equationResult: ${equationResult}`);
 
     const equationResultString = String(equationResult).replace(".", ",");
-    const fullEquationString = `${equationItems.operand1} ${equationItems.operationSymbol} ${equationItems.operand2} =`;
+    let fullEquationString = "";
+
+    if (equationItems.operationName === "sub" && Number(equationItems.operand2) < 0) {
+      fullEquationString = `${equationItems.operand1} ${equationItems.operationSymbol} (${equationItems.operand2}) =`;
+    } else {
+      fullEquationString = `${equationItems.operand1} ${equationItems.operationSymbol} ${equationItems.operand2} =`;
+    }
 
     updateDisplayContent(fullEquationString, equationResultString);
+    resetEquationItems();
+    equationItems.result = String(equationResult);
   }
 }
 
@@ -394,7 +405,9 @@ function onNumberInverterOperation() {
 
   const numberInvertedNotation = `1/(${equationItems.operand1})`;
   invertNumberOperand(numberInvertedNotation);
-  const numberInvertedResult = String(invertNumberOperand(numberInvertedNotation)).replace('.', ',');
+  const numberInvertedResult = String(
+    invertNumberOperand(numberInvertedNotation)
+  ).replace(".", ",");
 
   equationItems.operand1 = numberInvertedNotation;
   updateDisplayContent(numberInvertedNotation, numberInvertedResult);
@@ -427,9 +440,100 @@ function onSquareRootOperation() {
   updateDisplayContent(equationItems.operand1, squareRootResultString);
 }
 
+function onSignInverterOperation() {
+  console.clear();
+  console.log("DENTRO DA OPERAÇÃO DE INVERSÃO DE SINAL");
+
+  if (hasOperator()) {
+    // NEGATE SECOND OPERAND
+    // if (equationItems.operand2 === "") {
+    //   equationItems.operand2 = equationItems.operand1;
+    // }
+
+    // const negateOperandNotation = `negate(${equationItems.operand2})`;
+    // const negateOperandResult = String(negateOperand(negateOperandNotation)).replace('.',',');
+    // equationItems.operand2 = negateOperandNotation;
+
+    // const equationString = `${equationItems.operand1} ${equationItems.operationSymbol} ${equationItems.operand2}`;
+
+    // updateDisplayContent(equationString, negateOperandResult);
+
+    if (equationItems.operand2 === "") {
+      equationItems.operand2 = equationItems.operand1;
+    }
+
+    if (equationItems.operand2 !== "0") {
+      const hasNegativeSign = equationItems.operand2[0] === "-";
+
+      if (hasNegativeSign) {
+        equationItems.operand2 = equationItems.operand2.substring(
+          1,
+          equationItems.operand2.length
+        );
+      } else {
+        equationItems.operand2 = "-".concat(equationItems.operand2);
+      }
+
+      updateDisplayContent(null, equationItems.operand2);
+    }
+  } else {
+    // NEGATE FIRST OPERAND
+
+    if (equationItems.result !== "") {
+      updateDisplayContent("", equationItems.result);
+      equationItems.operand1 = equationItems.result;
+      equationItems.result = "";
+    }
+
+    if (equationItems.operand1 !== "0") {
+      const hasNegativeSign = equationItems.operand1[0] === "-";
+
+      if (hasNegativeSign) {
+        equationItems.operand1 = equationItems.operand1.substring(
+          1,
+          equationItems.operand1.length
+        );
+      } else {
+        equationItems.operand1 = "-".concat(equationItems.operand1);
+      }
+
+      updateDisplayContent(null, equationItems.operand1);
+    }
+  }
+}
+
 // ############################# KEYBOARD EVENTS #############################
 
 // ############################# UTILITARY FUNCTIONS #############################
+
+function negateOperand(operand) {
+  console.log("DENTRO DA FUNÇÃO negateOperand");
+  console.log(operand);
+
+  const NUMBER_TO_NEGATE_PATTERN = /\d*,?\d+/g;
+  const numberToNegate = operand.match(NUMBER_TO_NEGATE_PATTERN);
+
+  console.log(`numberToNegate: ${numberToNegate}`);
+
+  if (numberToNegate !== null) {
+    const numberToNegateParsed = Number(numberToNegate[0].replace(",", "."));
+
+    const AMOUNT_OF_NEGATIONS_PATTERN = /negate/g;
+    const amountOfNegations = operand.match(AMOUNT_OF_NEGATIONS_PATTERN).length;
+
+    let result = 0;
+
+    if (amountOfNegations % 2 === 0) {
+      result = numberToNegateParsed;
+    } else {
+      result = -1 * numberToNegateParsed;
+    }
+
+    return result;
+  } else {
+    return -1;
+  }
+}
 
 function invertNumberOperand(operand) {
   console.clear();
@@ -445,8 +549,14 @@ function invertNumberOperand(operand) {
   const numberToInvertWithParenthesis = operand.match(NUMBER_TO_INVERT_PATTERN);
 
   if (numberToInvertWithParenthesis !== null) {
-    const numberToInvertWithoutParenthesis = numberToInvertWithParenthesis[0].substring(1, numberToInvertWithParenthesis[0].length - 1);
-    const numberParsed = Number(numberToInvertWithoutParenthesis.replace(',', '.'));
+    const numberToInvertWithoutParenthesis =
+      numberToInvertWithParenthesis[0].substring(
+        1,
+        numberToInvertWithParenthesis[0].length - 1
+      );
+    const numberParsed = Number(
+      numberToInvertWithoutParenthesis.replace(",", ".")
+    );
 
     let result = 0;
 
@@ -590,13 +700,17 @@ function parseOperand(operand) {
   const COMMA_NUMBER_PATTERN = /(\d)*\,(\d)*/i;
   const SQR_PATTERN = /sqr/g;
   const SQRT_PATTERN = /\&\#8730\;/g;
+  const NEGATIONS_PATTERN = /negate/g;
 
   const isInvertedNumber = INVERTED_NUMBER_PATTERN.test(operand);
   const haveCommaInNumber = COMMA_NUMBER_PATTERN.test(operand);
   const isQuareOperation = SQR_PATTERN.test(operand);
   const isSqrtOperation = SQRT_PATTERN.test(operand);
+  const isNegationOperand = NEGATIONS_PATTERN.test(operand);
 
-  if (isSqrtOperation) {
+  if (isNegationOperand) {
+    return negateOperand(operand);
+  } else if (isSqrtOperation) {
     return squareRootOperand(operand);
   } else if (isQuareOperation) {
     return squareOperand(operand);
