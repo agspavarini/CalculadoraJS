@@ -14,39 +14,12 @@ const keyboardContainer = document.getElementById("keyboard-container");
 const displayEquationElement = document.getElementById("equation");
 const displayEquationResultElement = document.getElementById("equation-result");
 
+const trashIconHistory = document.getElementById("clear-history")
+
 /* ########################################## REFERENCE TO HTML ELEMENTS ########################################## */
 
 const tabData = {
-  history: [
-    {
-      equation: "579 &#215; 789",
-      result: "456.831",
-    },
-    {
-      equation: "579 &#215; 789",
-      result: "456.831",
-    },
-    {
-      equation: "579 &#215; 789",
-      result: "456.831",
-    },
-    {
-      equation: "579 &#215; 789",
-      result: "456.831",
-    },
-    {
-      equation: "579 &#215; 789",
-      result: "456.831",
-    },
-    {
-      equation: "579 &#215; 789",
-      result: "456.831",
-    },
-    {
-      equation: "579 &#215; 789",
-      result: "456.831",
-    },
-  ],
+  history: [ ],
   memory: [],
 };
 const equationItems = {
@@ -137,6 +110,7 @@ function addItemToHistory(item) {
 
 function clearHistory() {
   tabData.history = [];
+  reloadHistory()
 }
 
 /*
@@ -148,6 +122,8 @@ function reloadHistory() {
   if (tabData.history.length > 0) {
     for (let i = 0; i < tabData.history.length; i++) {
       const divElement = document.createElement("div");
+      divElement.setAttribute("data-op", tabData.history[i].operationName)
+      divElement.setAttribute("data-op-symbol", tabData.history[i].operationSymbol)
       const equationElement = document.createElement("p");
       const equationResultElement = document.createElement("p");
 
@@ -258,7 +234,25 @@ function onEqualsOperation() {
 
     updateDisplayContent(fullEquationString, equationResultString);
     resetEquationItems();
+
     equationItems.result = String(equationResult);
+
+    const historyItem = {
+      equation: fullEquationString,
+      operationName: equationItems.operationName,
+      operationSymbol: equationItems.operationSymbol,
+      result: equationItems.result
+    }
+
+    addItemToHistory(historyItem)
+    reloadHistory()
+  } else {
+    const historyItem = {
+      equation: `${equationItems.operand1} =`,
+      result: `${equationItems.operand1}`,
+    }
+    addItemToHistory(historyItem)
+    reloadHistory()
   }
 }
 
@@ -289,7 +283,6 @@ function onClearEntryOperation() {
     } else {
       equationItems.operand1 = "0";
     }
-
     updateDisplayContent(null, "0");
   }
 }
@@ -801,4 +794,5 @@ memoryTabElement.addEventListener("click", (element) => {
   }
 });
 
+trashIconHistory.addEventListener("click", ()=>{clearHistory()})
 /* ########################################## STYLIZATION PURPOSE ########################################## */
