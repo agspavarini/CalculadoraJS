@@ -15,6 +15,10 @@ ul {
     list-style-type: none;
 }
 
+body{
+    background-color: #f4f4f4;
+}
+
 /* ####################### GLOBAL DEFINITIONS */
 
 #container {
@@ -24,7 +28,9 @@ ul {
     transform: translate(-50%, -50%);
     display: flex;
 
-    border: 1px solid #BBB;
+    background-color: white;
+    border-radius: 25px;
+    box-shadow: 10px 10px 10px #e4e4e4;
 
     width: 70%;
     height: 80%;
@@ -42,7 +48,6 @@ ul {
 #container #left #display-container {
     width: 100%;
     flex: 1;
-    border-bottom: 1px solid #DDD;
 }
 
 #container #left #display-container #menu {
@@ -75,10 +80,6 @@ ul {
     height: 15px;
 }
 
-#container #left #display-container #menu button:hover {
-    background-color: #dcdcdc;
-}
-
 #container #left #display-container #display {
     padding: 10px 18px;
 }
@@ -86,6 +87,11 @@ ul {
 #container #left #display-container #display p {
     text-align: right;
 }
+
+#container #left #display-container #display #equation{
+    height: 20px;
+}
+
 
 #container #left #display-container #display #equation-result {
     font-size: 38px;
@@ -115,7 +121,6 @@ ul {
 
 #container #right {
     width: 35%;
-    border-left: 1px solid #BBB;
 
     display: flex;
     flex-direction: column;   
@@ -128,7 +133,6 @@ ul {
     display: flex;
     align-items: center;
 
-    border-bottom: 1px solid #CCC;
 }
 
 #container #right #top button {
@@ -192,13 +196,12 @@ ul {
 
 #container #right #bottom {
     flex: 1.2;
-    border-top: 1px solid #CCC;
 }
 
 #container #right #bottom button {
     position: absolute;
-    right: 4px;
-    bottom: 4px;
+    right: 10px;
+    bottom: 10px;
 
     background-color: transparent;
     border: 0;
@@ -277,4 +280,37 @@ ul {
     padding: 8px;
     border: 0;
     border-radius: 100%;
+}
+
+ul#keyboard-container li button.memory-button{
+    border: none;
+    background-color: transparent;
+
+}
+
+ul#keyboard-container li button.memory-button:hover{
+    background-color: #f0f0f0;
+}
+
+ul#keyboard-container li button{
+    border: none;
+    border-radius: 5px;
+}
+
+ul#keyboard-container li button#equal-button{
+    background-color: rgb(40, 100, 195);
+    color: white;
+}
+
+ul#keyboard-container li button#equal-button:hover{
+    background-color: rgb(73, 124, 204);
+}
+
+ul#keyboard-container li button.dark-gray-button{
+    background-color: #e8e8e8;
+}
+
+ul#keyboard-container li button.dark-gray-button:hover,
+ul#keyboard-container li button.white-button:hover{
+    background-color: #d7d7d7;
 }

@@ -689,7 +689,7 @@ function parseOperand(operand) {
   console.log("DENTRO DA FUNÇÃO parseOperand");
 
   // exemple: 1/(5)
-  const INVERTED_NUMBER_PATTERN = /1\/*/i;
+  const INVERTED_NUMBER_PATTERN = /1\/+/i;
   const COMMA_NUMBER_PATTERN = /(\d)*\,(\d)*/i;
   const SQR_PATTERN = /sqr/g;
   const SQRT_PATTERN = /\&\#8730\;/g;
