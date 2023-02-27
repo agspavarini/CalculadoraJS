@@ -95,6 +95,9 @@ function addKeyboardButtonsEvent() {
       case "number-inverter":
         buttonElement.addEventListener("click", onNumberInverterOperation);
         break;
+      case "square":
+        buttonElement.addEventListener("click", onSquareOperation);
+        break;
       default:
         break;
     }
@@ -166,7 +169,6 @@ function onUserClickOnNumberButton(element) {
   }
 
   if (hasOperator()) {
-
     if (equationItems.operand2 === "0") {
       equationItems.operand2 = buttonNumber;
     } else {
@@ -174,9 +176,7 @@ function onUserClickOnNumberButton(element) {
     }
 
     updateDisplayContent(null, equationItems.operand2);
-
   } else {
-
     if (equationItems.operand1 === "0") {
       equationItems.operand1 = buttonNumber;
     } else {
@@ -194,19 +194,16 @@ function onBasicArithmeticOperation(element) {
   console.log(equationItems);
 
   if (equationItems.operand2 !== "") {
-
     const equationResult = solveEquation();
     resetEquationItems();
 
-    equationItems.operand1 = String(equationResult).replace('.', ',');
+    equationItems.operand1 = String(equationResult).replace(".", ",");
     equationItems.operationName = arithmeticOperationName;
     equationItems.operationSymbol = arithmeticOperationSymbol;
 
     const partialEquationString = `${equationItems.operand1} ${equationItems.operationSymbol}`;
     updateDisplayContent(partialEquationString, equationItems.operand1);
-
   } else {
-
     if (equationItems.result !== "") {
       equationItems.operand1 = equationItems.result;
       equationItems.result = "";
@@ -218,7 +215,6 @@ function onBasicArithmeticOperation(element) {
     console.log(equationItems);
     updateDisplayContent(partialEquation);
   }
-
 }
 
 function onEqualsOperation(element) {
@@ -234,7 +230,6 @@ function onEqualsOperation(element) {
   }
 
   if (isEquationComplete()) {
-
     console.log("EQUATION IS COMPLETED! SOLVING THE EQUATION....");
 
     if (equationItems.result !== "") {
@@ -243,16 +238,14 @@ function onEqualsOperation(element) {
     console.log(equationItems);
 
     const equationResult = solveEquation();
-    
+
     console.log(`equationResult: ${equationResult}`);
 
-    const equationResultString = String(equationResult).replace('.', ',');;
+    const equationResultString = String(equationResult).replace(".", ",");
     const fullEquationString = `${equationItems.operand1} ${equationItems.operationSymbol} ${equationItems.operand2} =`;
 
     updateDisplayContent(fullEquationString, equationResultString);
-
   }
-
 }
 
 function onClearOperation() {
@@ -271,13 +264,11 @@ function onClearEntryOperation() {
   }
 
   if (isEquationSolved()) {
-
     resetEquationItems();
     updateDisplayContent("", "0");
-
   } else {
-
-    const isPartialEquation = (equationItems.operand1 !== "" && equationItems.operationName !== "");
+    const isPartialEquation =
+      equationItems.operand1 !== "" && equationItems.operationName !== "";
 
     if (isPartialEquation) {
       equationItems.operand2 = "0";
@@ -286,53 +277,50 @@ function onClearEntryOperation() {
     }
 
     updateDisplayContent(null, "0");
-
   }
-
 }
 
 function onBackspaceOperation() {
-  console.clear()
+  console.clear();
   console.log("O USUÁRIO CLICOU NO BOTÃO DE BACKSPACE");
 
   if (isEquationSolved()) {
-
     const equationResultString = equationItems.result;
 
     resetEquationItems();
 
-    equationItems.result = equationResultString
+    equationItems.result = equationResultString;
     updateDisplayContent("", equationItems.result);
-    
+
     return;
   }
 
   if (hasOperator()) {
-
     // REMOVE CHARACTERS FROM SECOND OPERATOR
     if (equationItems.operand2 !== "") {
       console.log("REMOVING LAST DIGIT FROM SECOND OPERAND");
-      equationItems.operand2 = removeLastDigitFromString(equationItems.operand2);
+      equationItems.operand2 = removeLastDigitFromString(
+        equationItems.operand2
+      );
       updateDisplayContent(null, equationItems.operand2);
     }
-
   } else {
     // REMOVE CHARACTERS FROM FIRST OPERATOR
     if (equationItems.operand1 !== "0") {
       console.log("REMOVING LAST DIGIT FROM FIRST OPERAND");
-      equationItems.operand1 = removeLastDigitFromString(equationItems.operand1);
+      equationItems.operand1 = removeLastDigitFromString(
+        equationItems.operand1
+      );
       updateDisplayContent(null, equationItems.operand1);
     }
   }
-
 }
 
 function onPercentOperation() {
   console.clear();
   console.log("O USUÁRIO CLICOU EM PERCENTUAL!");
-  
-  if (isEquationComplete()) {
 
+  if (isEquationComplete()) {
     console.log(equationItems);
 
     const operand2Percent = Number(equationItems.operand2) / 100;
@@ -342,32 +330,25 @@ function onPercentOperation() {
 
     updateDisplayContent(equationString, equationItems.operand2);
     console.log(equationItems);
-
   } else {
-
     resetEquationItems();
     updateDisplayContent("0", "0");
-
   }
-
 }
 
 function onCommaOperation() {
-
   console.clear();
   console.log("O USUÁRIO CLICOU NA VÍRGULA");
 
   console.log(equationItems);
 
   if (isEquationSolved()) {
-
     resetEquationItems();
 
     equationItems.operand1 = "0,";
     updateDisplayContent("", equationItems.operand1);
 
     return;
-
   }
 
   if (hasOperator()) {
@@ -379,13 +360,12 @@ function onCommaOperation() {
 
     const operandAlreadyHasComma = equationItems.operand2.includes(",");
     console.log(`OPERAND 2 ALREADY HAS A COMMA? ${operandAlreadyHasComma}`);
-    
+
     if (!operandAlreadyHasComma) {
       equationItems.operand2 = equationItems.operand2.concat(",");
     }
 
     updateDisplayContent(null, equationItems.operand2);
-
   } else {
     // ADD COMMA AT THE END OF FIRST OPERAND
     const operandAlreadyHasComma = equationItems.operand1.includes(",");
@@ -397,7 +377,6 @@ function onCommaOperation() {
 
     updateDisplayContent(null, equationItems.operand1);
   }
-
 }
 
 function onNumberInverterOperation() {
@@ -405,18 +384,34 @@ function onNumberInverterOperation() {
   console.log("O USUÁRIO CLICOU EM INVERTER NÚMERO");
 
   if (equationItems.operand1 === "0") {
-
     resetEquationItems();
     updateDisplayContent("1/(0)", "Não é possível dividir por zero");
     return;
-
   }
 
-  const invertedNumberResultString = String(parseOperand(equationItems.operand1)).replace('.', ',');
+  const invertedNumberResultString = String(
+    parseOperand(equationItems.operand1)
+  ).replace(".", ",");
   const invertedNumberNotation = `1/(${equationItems.operand1})`;
   equationItems.operand1 = invertedNumberNotation;
-
+  
+  console.log(equationItems);
   updateDisplayContent(invertedNumberNotation, invertedNumberResultString);
+}
+
+function onSquareOperation() {
+  console.clear();
+  console.log("DENTRO DA OPERAÇÃO x²");
+
+  const squareNotation = `sqr(${equationItems.operand1})`;
+  const squareResultString = String(squareOperand(squareNotation));
+  
+  equationItems.operand1 = squareNotation;
+  console.log(equationItems);
+
+  updateDisplayContent(squareNotation, squareResultString);
+  squareOperand(equationItems.operand1)
+
 
 }
 
@@ -424,8 +419,43 @@ function onNumberInverterOperation() {
 
 // ############################# UTILITARY FUNCTIONS #############################
 
-function removeLastDigitFromString(string) {
+function squareOperand(operand) {
+  
+  const NUMBER_TO_SQUARE_PATTERN = /\d+/g;
+  const numberToSquare = operand.match(NUMBER_TO_SQUARE_PATTERN);
 
+  console.log(`numberToSquare: ${numberToSquare}`);
+
+  if (numberToSquare !== null) {
+    
+    const numberToSquareParsed = Number(numberToSquare.join("."));
+    
+    if (numberToSquareParsed === 0) {
+      return 0;
+    }
+
+    if (numberToSquareParsed === 1) {
+      return 1;
+    }
+
+    let result = numberToSquareParsed;
+
+    const SQR_OCCURRENCIES_PATTERN = /sqr/g;
+    const amountOfSquareOperations = operand.match(SQR_OCCURRENCIES_PATTERN).length;
+
+    console.log(`amountOfSquareOperations: ${amountOfSquareOperations}`);
+
+    for(let i = 0; i < amountOfSquareOperations; i++) {
+      result *= result;
+    }
+
+    return result;
+    
+  }
+
+}
+
+function removeLastDigitFromString(string) {
   let numberWithoutLastDigit = "";
 
   if (string.length - 1 === 0) {
@@ -433,9 +463,8 @@ function removeLastDigitFromString(string) {
   } else {
     numberWithoutLastDigit = string.substring(0, string.length - 1);
   }
-  
-  return numberWithoutLastDigit;
 
+  return numberWithoutLastDigit;
 }
 
 function solveEquation() {
@@ -465,45 +494,54 @@ function solveEquation() {
       break;
   }
 
-  equationItems.result = String(result).replace('.', ',');
+  equationItems.result = String(result).replace(".", ",");
 
   return result;
 }
 
 function parseOperand(operand) {
-  console.clear()
+  console.clear();
   console.log("DENTRO DA FUNÇÃO parseOperand");
 
   // exemple: 1/(5)
   const INVERTED_NUMBER_PATTERN = /1\/\((\d\)*)/i;
   const COMMA_NUMBER_PATTERN = /(\d)*\,(\d)*/i;
-  
+  const SQR_PATTERN = /sqr/g;
+
   const isInvertedNumber = INVERTED_NUMBER_PATTERN.test(operand);
   const haveCommaInNumber = COMMA_NUMBER_PATTERN.test(operand);
-  
-  if (isInvertedNumber) {
+  const isQuareOperation = SQR_PATTERN.test(operand);
+
+  if (isQuareOperation) {
+
+    return squareOperand(operand);
+
+  } else if (isInvertedNumber) {
 
     const [, denominator] = operand.split("/");
-    const denominatorWithoutParenthesis = denominator.substring(1, denominator.length - 1)
-    const denominatorHaveComma = COMMA_NUMBER_PATTERN.test(denominatorWithoutParenthesis);
+    const denominatorWithoutParenthesis = denominator.substring(
+      1,
+      denominator.length - 1
+    );
+    const denominatorHaveComma = COMMA_NUMBER_PATTERN.test(
+      denominatorWithoutParenthesis
+    );
     let invertedNumberResult = 0;
 
     if (denominatorHaveComma) {
-      invertedNumberResult = 1 / Number(denominatorWithoutParenthesis.replace(',', '.'));
+      invertedNumberResult =
+        1 / Number(denominatorWithoutParenthesis.replace(",", "."));
     } else {
       invertedNumberResult = 1 / Number(denominatorWithoutParenthesis);
     }
     console.log(invertedNumberResult);
     return invertedNumberResult;
-
+    
   } else if (haveCommaInNumber) {
-
-    return Number(operand.replace(',', '.'));
-
+    return Number(operand.replace(",", "."));
   } else {
     return Number(operand);
   }
-
 }
 
 function setOperator(operator, symbol) {
